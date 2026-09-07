@@ -1,5 +1,6 @@
 # Environment variables
 .env
+.env.example
 
 # Storage and Indexes
 /data/
@@ -13,7 +14,6 @@ __pycache__/
 *.so
 .Python
 env/
-env.example/
 venv/
 ENV/
 .venv/
