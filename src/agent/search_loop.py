@@ -2,7 +2,7 @@ import json
 import hashlib
 import logging
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Callable
 
 import config
 from src.agent.state import SearchState
@@ -31,7 +31,12 @@ class HumanLikeSearchAgent:
         self.answer_generator = answer_generator or AnswerGenerator()
         self.max_iterations = max_iterations
 
-    def run(self, question: str, question_id: Optional[str] = None) -> SearchState:
+    def run(
+        self,
+        question: str,
+        question_id: Optional[str] = None,
+        on_iteration: Optional[Callable[[int, int], None]] = None,
+    ) -> SearchState:
         if not question_id:
             question_id = hashlib.md5(question.encode("utf-8")).hexdigest()[:8]
 
@@ -49,6 +54,11 @@ class HumanLikeSearchAgent:
         stagnant_iterations = 0
 
         while state.iteration <= state.max_iterations and not state.is_complete:
+            if on_iteration:
+                try:
+                    on_iteration(state.iteration, state.max_iterations)
+                except Exception as callback_error:
+                    logger.warning("Iteration callback failed: %s", callback_error)
             logger.info(f"\n--- Iteration {state.iteration}/{state.max_iterations} ---")
             logger.info(f"Exec Search Queries: {current_queries}")
             state.queries_history.extend(current_queries)
@@ -63,6 +73,8 @@ class HumanLikeSearchAgent:
                         state.retrieved_chunk_ids.add(cid)
                         iteration_chunks.append(chunk)
 
+            state.retrieved_chunks.extend(iteration_chunks)
+
             logger.info(f"Read {len(iteration_chunks)} NEW chunks (Total unique chunks read so far: {len(state.retrieved_chunk_ids)})")
 
             # 2. Combined Single-Call Evaluation (Facts + Conflicts + Sufficiency + Next Queries)
@@ -74,6 +86,9 @@ class HumanLikeSearchAgent:
             confidence = eval_result.get("confidence_score", 1)
             rationale = eval_result.get("rationale", "")
             next_queries = eval_result.get("next_suggested_queries", [])
+            state.has_enough_info = bool(has_enough)
+            state.last_confidence_score = int(confidence or 1)
+            state.missing_gaps = eval_result.get("missing_information", []) or []
 
             logger.info(f"Extracted {len(new_facts)} new facts.")
             logger.info(f"Detected {len(new_conflicts)} source conflicts.")
@@ -135,7 +150,19 @@ class HumanLikeSearchAgent:
 
         # 3. Generate Final Grounded Answer with Citations & Surfaced Conflicts
         logger.info("\nSynthesizing final answer...")
-        state.final_answer = self.answer_generator.generate_answer(state)
+        # This call is deliberately outside the search loop. Every normal stop
+        # path (confidence, max iterations, or stagnation) reaches it.
+        try:
+            state.final_answer = self.answer_generator.generate_answer(state)
+        except Exception as e:
+            # Preserve the final-answer guarantee even if a custom generator
+            # fails unexpectedly after the loop has stopped.
+            logger.exception("Final answer generation failed: %s", e)
+            state.final_answer = (
+                f"### Answer to: {state.question}\n\n"
+                "Based on available information, I could not fully confirm the answer. "
+                "The search stopped before conclusive evidence was available."
+            )
         
         # 4. Save Full Per-Iteration Trace to Disk (Requirement 6)
         self._save_trace_log(state)
@@ -152,8 +179,12 @@ class HumanLikeSearchAgent:
             "question": state.question,
             "total_iterations": state.iteration,
             "stop_reason": state.stop_reason,
+            "has_enough_info": state.has_enough_info,
+            "last_confidence_score": state.last_confidence_score,
+            "missing_gaps": state.missing_gaps,
             "unique_chunks_read_count": len(state.retrieved_chunk_ids),
             "retrieved_chunk_ids": list(state.retrieved_chunk_ids),
+            "retrieved_chunks": state.retrieved_chunks,
             "working_memory": state.working_memory,
             "identified_conflicts": state.identified_conflicts,
             "final_answer": state.final_answer,

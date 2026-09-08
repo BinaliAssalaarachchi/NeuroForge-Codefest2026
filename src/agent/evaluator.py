@@ -3,7 +3,7 @@ import re
 import logging
 from typing import List, Dict, Any, Optional
 from src.agent.state import SearchState
-from src.utils.client_openrouter import OpenRouterClient
+from src.utils.client_gemini import GeminiClient
 
 logger = logging.getLogger(__name__)
 
@@ -13,8 +13,8 @@ class CombinedEvaluator:
     Performs fact extraction, conflict detection, sufficiency evaluation,
     and next-query planning in one structured LLM call.
     """
-    def __init__(self, llm_client: Optional[OpenRouterClient] = None):
-        self.llm_client = llm_client or OpenRouterClient()
+    def __init__(self, llm_client: Optional[GeminiClient] = None):
+        self.llm_client = llm_client or GeminiClient()
 
     def evaluate_iteration(
         self,

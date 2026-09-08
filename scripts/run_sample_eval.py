@@ -41,6 +41,29 @@ def run_evaluation(sample_file: Path, limit: int = 5):
         qid = item.get("qid", f"sample_{idx}")
         track = item.get("track", "Unknown Track")
         qtext = item.get("question", "")
+        trace_path = config.TRACES_DIR / f"question_{qid}.json"
+
+        if trace_path.exists():
+            logger.info(f"Skipping QID '{qid}': existing trace found at '{trace_path}'.")
+            try:
+                with open(trace_path, "r", encoding="utf-8") as trace_file:
+                    existing_trace = json.load(trace_file)
+                results_summary.append({
+                    "qid": qid,
+                    "track": track,
+                    "question": qtext,
+                    "iterations": existing_trace.get("total_iterations", 0),
+                    "chunks_read": existing_trace.get("unique_chunks_read_count", 0),
+                    "facts_found": len(existing_trace.get("working_memory", [])),
+                    "conflicts_surfaced": len(existing_trace.get("identified_conflicts", [])),
+                    "stop_reason": existing_trace.get("stop_reason", ""),
+                    "final_answer": existing_trace.get("final_answer", ""),
+                    "trace_file": str(trace_path),
+                    "status": "skipped_existing_trace",
+                })
+            except Exception as e:
+                logger.error(f"Could not load existing trace for QID '{qid}': {e}")
+            continue
 
         logger.info(f"\n==================================================")
         logger.info(f"[{idx}/{len(questions)}] Processing QID '{qid}' ({track})")
@@ -59,7 +82,8 @@ def run_evaluation(sample_file: Path, limit: int = 5):
                 "conflicts_surfaced": len(state.identified_conflicts),
                 "stop_reason": state.stop_reason,
                 "final_answer": state.final_answer,
-                "trace_file": f"logs/traces/question_{qid}.json"
+                "trace_file": f"logs/traces/question_{qid}.json",
+                "status": "executed"
             }
             results_summary.append(summary_entry)
         except Exception as e:
