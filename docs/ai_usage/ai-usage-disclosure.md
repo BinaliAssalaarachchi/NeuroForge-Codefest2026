@@ -8,6 +8,14 @@ Per the SLIIT Codefest 2026 AI Competition AI Usage Policy (Section 4.1), this d
 
 ## Tools Used During Development
 
+### 1. Antigravity (Google)
+- **Used for:**
+  -Early-stage development, at the start of the competition window, before the team settled on the final architecture — initial project scaffolding, exploratory prototyping of the retrieval pipeline, and early experimentation with the ingestion pipeline (DocumentParser/Chunker) design.
+What the team decided, not the AI:
+  -The decision to move from this early prototyping phase into the final hybrid BM25 + dense retrieval architecture and the iterative agent loop was made by the team based on what worked and didn't during this exploratory phase — documented as part of the design evolution in docs/limitations.md.
+  -Code and structure from this phase were reviewed and substantially reworked as the team's understanding of the problem matured; not all early scaffolding survived into the final submission.
+- **Chat log:** exported to [ai_usage/chat-logs/antigravity-session.txt](chat-logs/antigravity-coding-session.txt)
+
 ### 1. Codex (OpenAI)
 - **Used for:**
   - Implementation support while writing the system's code - the offline ingestion pipeline (DocumentParser, Chunker), the hybrid retrieval components (BM25 Search, Dense Vector Search, Reciprocal Rank Fusion), the iterative agent (HumanLikeSearchAgent, SearchState, CombinedEvaluator, AnswerGenerator), and the application interfaces (Streamlit `app.py`, CLI `main.py`, `scripts/query_search.py`).
@@ -26,7 +34,7 @@ Per the SLIIT Codefest 2026 AI Competition AI Usage Policy (Section 4.1), this d
 - **What the team decided, not the AI:**
   - The actual system design (architecture, retrieval strategy, stopping logic) was given to Claude *after* the team built it — Claude helped document it clearly, it did not design the system.
   - All bracketed/placeholder content in template docs was reviewed and replaced with the team's actual figures, thresholds, and test results before submission.
-- **Chat log:** exported to [`ai_usage/chat-logs/claude-docs-session.txt`](chat-logs/claude-docs-session.txt)
+
 
 ---
 
@@ -81,8 +89,8 @@ All exported conversation logs referenced above are included as plain `.txt` fil
 ai_usage/
 ├── ai-usage-disclosure.md      # this file
 └── chat-logs/
+    ├── antigravity-session.txt
     ├── codex-coding-session.txt
-    └── claude-docs-session.txt
 ```
 
 ---
