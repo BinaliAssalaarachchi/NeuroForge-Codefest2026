@@ -9,7 +9,7 @@ This document records the significant design and technical decisions made while 
 ### D1 - Sub-track Selection: 1C (Iterative, Human-Like Search)
 **Decision:** We chose Sub-track 1C over 1A (multimodal answers) and 1B (cross-document linking).
 **Why:** `[e.g. our strength is in agent orchestration and reasoning, and the Ashen Era Archive's multi-hop questions (e.g. "which equipment is affected if component Y fails?") fit an iterative search agent better than a single-pass retrieval system.]`
-**Alternatives considered:** 1A would have required heavier investment in image/table extraction pipelines; 1B is a subset of what an iterative agent already needs to do (link facts across documents) but without the reasoning/re-planning layer, so we felt 1C was the more complete and technically ambitious challenge for our team.
+**Alternatives considered:** We initially built against the **OpenAI API**, but hit usage/rate limits during development that blocked testing. We switched to **Gemini's free tier**, but found its outputs were sometimes inconsistent — occasionally uncertain or lower-confidence answers — and it also had its own rate limits that interrupted testing. We ultimately settled on **Gemini Pro (Google API)**, which gave more consistent, higher-confidence reasoning for the agent's search-and-evaluate loop, with a more workable rate limit for our team's development pace.
 
 ---
 
