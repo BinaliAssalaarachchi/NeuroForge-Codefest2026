@@ -148,7 +148,7 @@ See [`docs/limitations.md`](docs/limitations.md) for a full, honest account of w
 
 ## AI Usage Disclosure
 
-In line with the competition's AI Usage Policy, all AI tools used during development, what they were used for, and which decisions were made by the team (not the AI) are documented in [`ai_usage/ai-usage-disclosure.md`](ai_usage/ai-usage-disclosure.md), alongside exported chat logs.
+In line with the competition's AI Usage Policy, all AI tools used during development, what they were used for, and which decisions were made by the team (not the AI) are documented in [`ai_usage/ai-usage-disclosure.md`](docs/ai_usage/ai-usage-disclosure.md), alongside exported chat logs.
 
 ## Team
 
