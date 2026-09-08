@@ -1,0 +1,3 @@
+Prompts
+
+scripts/test_stage1.py is a manual integration test. Add a small, genuine automated test suite using pytest: a unit test for chunker.py confirming chunk metadata and overlap are correct, a test for hybrid_search.py against a tiny fixture index confirming RRF fusion returns sensible ordering, and one end-to-end test that runs a single known question through search_loop.py against the real corpus and asserts it terminates within the iteration cap with a non-empty cited answer. Keep it lightweight — this needs to show real testing discipline to judges, not be exhaustive.
