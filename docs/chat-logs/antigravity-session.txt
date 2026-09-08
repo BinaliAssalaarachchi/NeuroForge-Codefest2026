@@ -1,0 +1,46 @@
+## prompt 1
+
+**Project: AI assistant for SLIIT Codefest 2026, Sub-track 1C ("Searching the Way a
+Human Does").**
+
+CONTEXT
+The corpus is the "Ashen Era Archive" — a fictional fantasy archive of 415 documents
+(~1,277 pages), mixed formats: PDF, DOCX, markdown, plain text, simulated scanned
+pages. It's in ./corpus. A dev question set is at ./corpus/sample_questions.json.
+
+GOAL
+Build an assistant that answers questions through iterative, self-directed retrieval:
+search → read → judge "do I have enough?" → if not, search again based on what was
+just learned → repeat (cap ~5-6 iterations) → answer with cited sources. Some
+questions require connecting facts across multiple documents; some sources conflict
+and that should be surfaced, not silently resolved.
+
+CONSTRAINTS
+- Python. Embeddings via Voyage AI (voyage-4-lite). Vector store: Chroma or FAISS,
+  local. LLM via OpenRouter, free-tier models to start.
+- The search-loop must be plain code we write ourselves — no LangChain agents or
+  similar black-box frameworks. Every team member must be able to read and explain it
+  line by line.
+- API keys from .env (git-ignored). Retry-with-backoff on every external call.
+
+For now, don't write any code. Propose an implementation plan: the pipeline stages,
+how you'd structure the repo, and how the agent loop's "do I have enough?" decision
+would work. I'll review and confirm before you build anything.
+
+## prompt 2
+
+**Plan approved with [any corrections you made]. Now build stage 1 only: the ingestion
+pipeline and indexing.**
+
+- Parse all formats in ./corpus into clean, chunked text, tagging each chunk with its
+  source document and page.
+- OCR the simulated scanned pages.
+- Embed chunks with Voyage AI and store them in the vector DB.
+Stop after this stage so I can inspect the output before we build retrieval on top of it.
+
+## prompt 3
+
+Now build a test harness that runs every question in sample_questions.json through
+the system and logs: the answer, which sources it cited, and how many search
+iterations it took. Run it and show me the results — I want to see which questions
+needed more than one search.
