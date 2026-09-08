@@ -26,25 +26,26 @@ This is the honest account of our system's capabilities and gaps, as required by
 
 ## Approaches We Tried and Abandoned
 
-### Attempt 1: Single-pass retrieval (no agent loop)
+### Attempt 1: OpenAI API, then Gemini free tier
+- **What we tried:** Started development on the OpenAI API for reasoning/generation, later switched to Gemini's free tier.
+- **Why it failed:** OpenAI usage limits were hit early in development, blocking testing. Gemini's free tier then produced inconsistent answers — sometimes low-confidence or uncertain — and had its own rate limits that interrupted iterative testing.
+- **What we learned / changed:** Moved to Gemini Pro via the Google API, which gave more reliable, consistent reasoning for the CombinedEvaluator's confidence-scoring step and a rate limit workable for four team members developing in parallel.
+
+### Attempt 2: Single-pass retrieval (no agent loop)
 - **What we tried:** Retrieve top-k chunks once via dense search only, then generate an answer directly.
 - **Why it failed:** Multi-hop questions requiring facts from more than one document were answered incompletely or incorrectly, since no single retrieval pass surfaced the full evidence chain.
 - **What we learned / changed:** Led directly to the iterative HumanLikeSearchAgent + CombinedEvaluator loop described in `architecture.md` and `decisions.md` (D1, D5).
 
-### Attempt 2: Dense-only retrieval (no BM25)
+### Attempt 3: Dense-only retrieval (no BM25)
 - **What we tried:** Relied solely on Voyage embeddings + ChromaDB for retrieval, without a keyword index.
 - **Why it failed:** Missed exact-match queries for specific names, item/component IDs, and archive-specific terminology that don't embed distinctively from surrounding text.
 - **What we learned / changed:** Added the BM25 Keyword Index and combined it with dense search via Reciprocal Rank Fusion (`decisions.md`, D3/D5).
 
-### Attempt 3: Fixed-hop retrieval loop
+### Attempt 4: Fixed-hop retrieval loop
 - **What we tried:** A fixed number of search iterations (e.g. always exactly N hops) regardless of question difficulty.
 - **Why it failed:** Wasted API calls and latency on simple questions, while still sometimes under-retrieving on the hardest multi-hop ones.
 - **What we learned / changed:** Replaced with the CombinedEvaluator's dynamic confidence-gated stopping criterion.
 
-### Attempt 4: OpenAI API, then Gemini free tier
-- **What we tried:** Started development on the OpenAI API for reasoning/generation, later switched to Gemini's free tier.
-- **Why it failed:** OpenAI usage limits were hit early in development, blocking testing. Gemini's free tier then produced inconsistent answers — sometimes low-confidence or uncertain — and had its own rate limits that interrupted iterative testing.
-- **What we learned / changed:** Moved to Gemini Pro via the Google API, which gave more reliable, consistent reasoning for the CombinedEvaluator's confidence-scoring step and a rate limit workable for four team members developing in parallel.
 ---
 
 ## Known Edge Cases / Failure Modes
