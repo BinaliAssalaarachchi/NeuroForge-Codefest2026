@@ -1,8 +1,8 @@
-# NeuroForge — Intelligent Document Assistant
+# NeuroForge - Intelligent Document Assistant
 ### SLIIT Codefest 2026 · AI Competition (Powered by IFS)
-### Sub-track 1C — Searching the Way a Human Does
+### Sub-track 1C: Searching the Way a Human Does
 
-An agentic, multi-step retrieval assistant that reasons over the **Ashen Era Archive** — 415 documents, ~1,277 pages of novels, wiki articles, codexes, and in-world ephemera — the way a human researcher does: search, read, decide what's missing, search again, and only then answer.
+An agentic, multi-step retrieval assistant that reasons over the **Ashen Era Archive** - 415 documents, ~1,277 pages of novels, wiki articles, codexes, and in-world ephemera - the way a human researcher does: search, read, decide what's missing, search again, and only then answer.
 
 ---
 
@@ -25,13 +25,13 @@ An agentic, multi-step retrieval assistant that reasons over the **Ashen Era Arc
 
 ## Overview
 
-Real enterprise documentation is scattered, inconsistent, and too large to read in one pass. Some questions can't be answered from a single lookup — they require **iterative reasoning**: search, evaluate what was found, identify the gap, search again, and repeat until there's enough evidence for a complete, well-grounded answer.
+Real enterprise documentation is scattered, inconsistent, and too large to read in one pass. Some questions can't be answered from a single lookup - they require **iterative reasoning**: search, evaluate what was found, identify the gap, search again, and repeat until there's enough evidence for a complete, well-grounded answer.
 
-**NeuroForge** builds an AI assistant that works this way against the official competition corpus, the **Ashen Era Archive** — a fully invented fantasy franchise (novels, wiki, codexes, ephemera, and scanned images) built specifically so no model's prior knowledge can help. Our system must genuinely reason over the provided documents, resolve conflicting or unreliable sources, and know when it has — and hasn't — gathered enough to answer.
+**NeuroForge** builds an AI assistant that works this way against the official competition corpus, the **Ashen Era Archive** - a fully invented fantasy franchise (novels, wiki, codexes, ephemera, and scanned images) built specifically so no model's prior knowledge can help. Our system must genuinely reason over the provided documents, resolve conflicting or unreliable sources, and know when it has — and hasn't — gathered enough to answer.
 
 ## The Challenge
 
-We chose **Sub-track 1C — Searching the Way a Human Does**:
+We chose **Sub-track 1C: Searching the Way a Human Does**:
 
 > Build an assistant that decides where to look and in what order, checks whether it has enough information, and if not, uses what it has learned so far to guide the next search — repeating until it can give a complete answer.
 
