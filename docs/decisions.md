@@ -1,6 +1,6 @@
 # Key Technical Decisions
 
-This document records the significant design and technical decisions made while building NeuroForge's Intelligent Document Assistant (Sub-track 1C — Searching the Way a Human Does), the alternatives we considered, and why we chose what we chose.
+This document records the significant design and technical decisions made while building NeuroForge's Intelligent Document Assistant (Sub-track 1C - Searching the Way a Human Does), the alternatives we considered, and why we chose what we chose.
 
 ---
 
@@ -85,11 +85,5 @@ This document records the significant design and technical decisions made while 
 
 ---
 
-## How to Use This File
-Add a new `### D<n>` entry whenever the team makes a decision worth defending in the final round. Keep each entry short: what we chose, why, what else we considered, and the trade-off we accepted.
 
 
----
-
-## How to Use This File
-Add a new `### D<n>` entry whenever the team makes a decision worth defending in the final round — new entries are cheap, a missing decision log entry during judging is not. Keep each entry short: what we chose, why, what else we considered, and the trade-off we accepted.
