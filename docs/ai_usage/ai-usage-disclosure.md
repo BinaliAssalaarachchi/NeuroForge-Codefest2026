@@ -14,7 +14,7 @@ Per the SLIIT Codefest 2026 AI Competition AI Usage Policy (Section 4.1), this d
 What the team decided, not the AI:
   -The decision to move from this early prototyping phase into the final hybrid BM25 + dense retrieval architecture and the iterative agent loop was made by the team based on what worked and didn't during this exploratory phase — documented as part of the design evolution in docs/limitations.md.
   -Code and structure from this phase were reviewed and substantially reworked as the team's understanding of the problem matured; not all early scaffolding survived into the final submission.
-- **Chat log:** exported to[[ docs/ai_usage/chat-logs/antigravity-session.txt]](NeuroForge-Codefest2026/docs/ai_usage/chat-log/antigravity-session.txt)
+- **Chat log:** exported to[[ NeuroForge-Codefest2026/docs/ai_usage/chat-log/antigravity-session.txt]](NeuroForge-Codefest2026/docs/ai_usage/chat-log/antigravity-session.txt)
 
 ### 1. Codex (OpenAI)
 - **Used for:**
