@@ -154,8 +154,8 @@ In line with the competition's AI Usage Policy, all AI tools used during develop
 
 **Team Name:** NeuroForge
 
-| Name | Role | Key Contributions |
-|---|---|---|
+| Name | Key Contributions |
+|---|---|
 | `Binali Assalaarachchi` | `Retrieval & Corpus Engineering`|
 | `Tharudi Jayasundara` | `Agentic Reasoning & Orchestration`  |
 | `Chathuni Piyumali` | `Answer Synthesis, Grounding & Evaluation` |
